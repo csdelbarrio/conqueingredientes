@@ -121,8 +121,11 @@ def verify(site_root):
             if not clean:
                 continue
             target = os.path.normpath(os.path.join(os.path.dirname(html_path), clean))
-            if not os.path.isfile(target):
-                missing.append((html_path, ref))
+            if os.path.isfile(target):
+                continue
+            if os.path.isfile(os.path.join(target, "index.html")):
+                continue  # enlace a directorio sin barra final; el servidor redirige
+            missing.append((html_path, ref))
     return missing
 
 

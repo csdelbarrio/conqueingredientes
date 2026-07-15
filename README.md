@@ -1,54 +1,66 @@
 # conqueingredientes-legacy
 
-Rescate del sitio `conqueingredientes.com` desde Wayback Machine.
+Rescate de contenido del portfolio `conqueingredientes.com` desde Wayback
+Machine, para reconstruir el portfolio con un formato nuevo y sencillo.
 
 - Snapshot de referencia: https://web.archive.org/web/20181107235414/http://conqueingredientes.com/
 - Fecha del snapshot: 2018-11-07
 
-## Por que hay solo scripts en el repo (por ahora)
+## Contenido recuperado (`content/`)
 
-Este repositorio se inicio desde un entorno remoto sin acceso de red a
-`web.archive.org` (bloqueado por politica de egress del entorno). No es
-posible descargar el snapshot desde ahi. Los scripts de este repo estan
-listos para ejecutarse desde una maquina con acceso normal a internet
-(por ejemplo, una sesion local de Claude Code en tu propio equipo).
+En vez de clonar el WordPress completo (tema y plugins legacy de 2015-2018,
+con muchas dependencias rotas), se extrajo solo lo reutilizable para montar
+un portfolio nuevo:
 
-## Como recuperar el sitio
-
-Requisitos: Ruby (para `wayback_machine_downloader`) y Python 3.
-
-```bash
-# 1. Descargar el snapshot (respeta la fecha de cada asset: toma la
-#    version mas reciente de cada URL capturada en/antes del timestamp)
-./scripts/download_wayback_site.sh
-
-# 2. Reescribir rutas absolutas/wayback a relativas y verificar assets rotos
-python3 scripts/rewrite_and_verify.py site conqueingredientes.com
-
-# 3. Revisar el informe generado
-cat BROKEN_ASSETS.md
-
-# 4. Servir en local para comprobar visualmente
-cd site && python3 -m http.server 8000
-# abrir http://localhost:8000
+```
+content/
+  proyectos.md          # texto de los 23 proyectos: titulo, cliente, tags, descripcion
+  proyectos/<slug>/      # imagenes de cada proyecto, a la mayor resolucion disponible
+  pdfs/                  # PDFs recuperados (CV, diptico Madretierra Catering)
 ```
 
-Si `BROKEN_ASSETS.md` reporta referencias colgantes o assets 404, prueba
-a re-descargar con el flag `--all` (incluye tambien redirecciones/errores
-capturados por Wayback):
+Dos proyectos (`smart`, `bmw-serie-3-tap-tap`) no tienen imagen: eran
+microsites embebidos por iframe (demo externa) sin galeria propia ni
+miniatura en ninguna otra pagina del archivo.
 
-```bash
-wayback_machine_downloader http://conqueingredientes.com \
-  -t 20181107235414 -d site -a
-python3 scripts/rewrite_and_verify.py site conqueingredientes.com
-```
-
-## Estructura
+## Scripts
 
 ```
 scripts/
-  download_wayback_site.sh   # descarga el snapshot con wayback_machine_downloader
-  rewrite_and_verify.py      # relativiza rutas y detecta assets rotos
-site/                        # (generado) contenido recuperado del sitio
-BROKEN_ASSETS.md             # (generado) informe de assets/enlaces rotos
+  wayback_fetch.py           # descarga un snapshot completo via API CDX de Wayback
+  download_wayback_site.sh   # wrapper de wayback_fetch.py para conqueingredientes.com
+  rewrite_and_verify.py      # relativiza rutas y detecta assets rotos (uso con site/)
+  extract_portfolio.py       # genera content/ a partir de site/my-portfolio/<slug>/
 ```
+
+`wayback_fetch.py` sustituye a la gema `wayback_machine_downloader`: su
+paginacion contra la API CDX daba errores 400/503 intermitentes en este
+entorno. Es reanudable (salta ficheros ya descargados) y reintenta con
+backoff ante cortes de conexion.
+
+## Como reproducir la extraccion
+
+Requisito: Python 3 (sin dependencias externas).
+
+```bash
+# 1. Descargar el snapshot completo a site/ (no versionado, ~40MB)
+./scripts/download_wayback_site.sh
+
+# 2. Extraer texto + imagenes + pdfs a content/
+python3 scripts/extract_portfolio.py
+```
+
+`site/` es el volcado bruto de Wayback (tema WordPress "freis"/Enfold con
+sus plugins) y no esta versionado: se usa solo como fuente intermedia para
+`extract_portfolio.py`. Si en el futuro hace falta releer el HTML original
+de un proyecto, basta con volver a ejecutar `download_wayback_site.sh`.
+
+### Limitaciones conocidas
+
+- 4 PDFs antiguos (2009, ruta `docs/conqueingredientes.com_*.pdf`, no
+  enlazados desde ninguna pagina de la version final del sitio) truncan
+  siempre en el mismo punto al descargarlos desde Wayback: es un problema
+  del lado del archivo (registro WARC/ARC daniado), no del cliente.
+- Los datos de contacto/cliente son los que aparecian en el sitio original
+  tal cual (algun enlace de "cliente" apunta a una ruta interna rota del
+  propio conqueingredientes.com en vez de a la web externa del cliente).
