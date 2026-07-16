@@ -1,95 +1,196 @@
-const grid = document.getElementById('grid');
-const filterBar = document.getElementById('filterBar');
-const resultCount = document.getElementById('resultCount');
-const modalBackdrop = document.getElementById('modalBackdrop');
-const modalEl = document.getElementById('modal');
+/* ============================================================
+   Conqueingredientes — main.js
+   Render de capacidades, proyectos, filtros y micro-interacciones
+   ============================================================ */
 
-let activeTag = null;
+(function () {
+  'use strict';
 
-// Build tag list
-const allTags = [...new Set(PROJECTS.flatMap(p => p.tags))].sort();
-const allBtn = document.createElement('button');
-allBtn.className = 'tag-btn active';
-allBtn.textContent = 'Todos';
-allBtn.addEventListener('click', () => setFilter(null));
-filterBar.insertBefore(allBtn, resultCount);
+  const $ = (sel, ctx = document) => ctx.querySelector(sel);
+  const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
-allTags.forEach(tag => {
-  const btn = document.createElement('button');
-  btn.className = 'tag-btn';
-  btn.textContent = tag;
-  btn.addEventListener('click', () => setFilter(tag));
-  filterBar.insertBefore(btn, resultCount);
-});
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-function setFilter(tag){
-  activeTag = tag;
-  [...filterBar.querySelectorAll('.tag-btn')].forEach(b => {
-    b.classList.toggle('active', (tag === null && b.textContent === 'Todos') || b.textContent === tag);
-  });
-  render();
-}
+  /* ---------- Capacidades ---------- */
+  const capList = $('#capList');
 
-function render(){
-  const list = activeTag ? PROJECTS.filter(p => p.tags.includes(activeTag)) : PROJECTS;
-  resultCount.textContent = list.length + ' / ' + PROJECTS.length;
-  grid.innerHTML = '';
-  if(list.length === 0){
-    grid.innerHTML = '<div class="no-results">Sin resultados para este filtro.</div>';
-    return;
+  function renderCapacidades() {
+    capList.innerHTML = CAPACIDADES.map(cap => `
+      <li class="cap-item reveal" data-cap="${cap.id}">
+        <span class="cap-num">[${cap.num}]</span>
+        <h3 class="cap-name">${cap.nombre}</h3>
+        <div class="cap-body">
+          <p>${cap.desc}</p>
+          <div class="cap-chips">
+            ${cap.chips.map(c => `<span>${c}</span>`).join('')}
+          </div>
+        </div>
+      </li>
+    `).join('');
   }
-  list.forEach((p) => {
-    const idx = PROJECTS.indexOf(p) + 1;
-    const card = document.createElement('article');
-    card.className = 'card';
-    card.addEventListener('click', () => openModal(p));
 
-    const mediaHtml = p.images.length
-      ? `<div class="card-media"><span class="card-index">${String(idx).padStart(2,'0')}/23</span><img src="content/proyectos/${p.slug}/${p.images[0]}" alt="${p.title}" loading="lazy"></div>`
-      : `<div class="card-media empty"><span class="card-index">${String(idx).padStart(2,'0')}/23</span><span>Sin imagen archivada</span></div>`;
+  /* Imagen flotante al pasar por una capacidad:
+     muestra el primer proyecto de esa categoría */
+  const preview = $('#capPreview');
+  const previewImg = $('img', preview);
 
-    card.innerHTML = `
-      ${mediaHtml}
-      <div class="card-body">
-        <p class="card-client">${p.cliente_name ? p.cliente_name : 'Proyecto propio / interno'}</p>
-        <h3 class="card-title">${p.title}</h3>
-        <p class="card-desc">${p.description}</p>
-        <div class="stamp-row">${p.tags.map(t => `<span class="stamp">${t}</span>`).join('')}</div>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
-}
+  function setupCapPreview() {
+    if (reducedMotion || !window.matchMedia('(pointer: fine)').matches) return;
 
-function openModal(p){
-  const galleryHtml = p.images.length
-    ? `<div class="modal-gallery">${p.images.map(img => `<img src="content/proyectos/${p.slug}/${img}" alt="${p.title}">`).join('')}</div>`
-    : `<div class="modal-gallery empty"><span>Sin imagen archivada para este proyecto</span></div>`;
+    let raf = null;
+    let x = 0, y = 0;
 
-  const linksHtml = [
-    p.cliente_url ? `<a href="${p.cliente_url}" target="_blank" rel="noopener">Ver cliente ↗</a>` : '',
-    p.demo ? `<a href="${p.demo}" target="_blank" rel="noopener">Demo original ↗</a>` : ''
-  ].filter(Boolean).join('');
+    document.addEventListener('mousemove', e => {
+      x = e.clientX; y = e.clientY;
+      if (!raf) {
+        raf = requestAnimationFrame(() => {
+          preview.style.left = (x + 24) + 'px';
+          preview.style.top = (y - 90) + 'px';
+          raf = null;
+        });
+      }
+    });
 
-  modalEl.innerHTML = `
-    <button class="modal-close" id="modalClose">✕</button>
-    ${galleryHtml}
-    <div class="modal-body">
-      <p class="modal-client">${p.cliente_name ? p.cliente_name : 'Proyecto propio / interno'}</p>
-      <h2 class="modal-title">${p.title}</h2>
-      <p class="modal-desc">${p.description}</p>
-      <div class="stamp-row" style="margin-bottom:20px;">${p.tags.map(t => `<span class="stamp">${t}</span>`).join('')}</div>
-      ${linksHtml ? `<div class="modal-links">${linksHtml}</div>` : ''}
-    </div>
-  `;
-  modalBackdrop.classList.add('open');
-  document.getElementById('modalClose').addEventListener('click', closeModal);
-}
+    $$('.cap-item').forEach(item => {
+      item.addEventListener('mouseenter', () => {
+        const capId = item.dataset.cap;
+        const proyecto = PROYECTOS.find(p => p.caps.includes(capId));
+        if (!proyecto) return;
+        previewImg.src = `${proyecto.img}`;
+        previewImg.alt = proyecto.title;
+        preview.classList.add('show');
+      });
+      item.addEventListener('mouseleave', () => preview.classList.remove('show'));
+    });
+  }
 
-function closeModal(){
-  modalBackdrop.classList.remove('open');
-}
-modalBackdrop.addEventListener('click', (e) => { if(e.target === modalBackdrop) closeModal(); });
-document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeModal(); });
+  /* ---------- Proyectos + filtros ---------- */
+  const filtersEl = $('#filters');
+  const gridEl = $('#worksGrid');
+  let activeFilter = 'todos';
 
-render();
+  function renderFilters() {
+    const btns = [
+      `<button class="filter-btn active" data-filter="todos">Todos</button>`,
+      ...CAPACIDADES.map(c =>
+        `<button class="filter-btn" data-filter="${c.id}">${c.nombre}</button>`)
+    ];
+    filtersEl.innerHTML = btns.join('');
+
+    filtersEl.addEventListener('click', e => {
+      const btn = e.target.closest('.filter-btn');
+      if (!btn) return;
+      activeFilter = btn.dataset.filter;
+      $$('.filter-btn', filtersEl).forEach(b => b.classList.toggle('active', b === btn));
+      renderWorks();
+    });
+  }
+
+  function renderWorks() {
+    const items = activeFilter === 'todos'
+      ? PROYECTOS
+      : PROYECTOS.filter(p => p.caps.includes(activeFilter));
+
+    if (!items.length) {
+      gridEl.innerHTML = `<p class="works-empty">No hay proyectos en esta categoría todavía.</p>`;
+      return;
+    }
+
+    gridEl.innerHTML = items.map((p, i) => `
+      <article class="work-card" style="animation-delay:${Math.min(i * 60, 360)}ms">
+        <div class="work-media">
+          <img src="${p.img}" alt="${p.title}" loading="lazy">
+        </div>
+        <h3 class="work-title">${p.title}</h3>
+        <p class="work-desc">${p.desc}</p>
+        <div class="work-tags">
+          ${p.tags.map(t => `<span>${t}</span>`).join('')}
+        </div>
+      </article>
+    `).join('');
+  }
+
+  /* ---------- Ticker ---------- */
+  function renderTicker() {
+    const track = $('#tickerTrack');
+    const items = SKILLS.map(s => `<span>${s}</span><span class="tick-sep">✳</span>`).join('');
+    track.innerHTML = items + items; /* duplicado para bucle continuo */
+  }
+
+  /* ---------- Reveal on scroll ---------- */
+  function setupReveals() {
+    if (reducedMotion) {
+      $$('.reveal').forEach(el => el.classList.add('in'));
+      return;
+    }
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    $$('.reveal').forEach(el => io.observe(el));
+  }
+
+  /* ---------- Contador de stats ---------- */
+  function setupCounters() {
+    const nums = $$('.stats strong');
+    if (reducedMotion) {
+      nums.forEach(el => el.textContent = el.dataset.count);
+      return;
+    }
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = parseInt(el.dataset.count, 10);
+        const dur = 1200;
+        const t0 = performance.now();
+        (function tick(t) {
+          const p = Math.min((t - t0) / dur, 1);
+          el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+          if (p < 1) requestAnimationFrame(tick);
+        })(t0);
+        io.unobserve(el);
+      });
+    }, { threshold: 0.5 });
+    nums.forEach(el => io.observe(el));
+  }
+
+  /* ---------- Menú móvil ---------- */
+  function setupMobileMenu() {
+    const toggle = $('.menu-toggle');
+    const menu = $('.mobile-menu');
+
+    function close() {
+      toggle.classList.remove('open');
+      menu.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      menu.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    toggle.addEventListener('click', () => {
+      const isOpen = menu.classList.toggle('open');
+      toggle.classList.toggle('open', isOpen);
+      toggle.setAttribute('aria-expanded', String(isOpen));
+      menu.setAttribute('aria-hidden', String(!isOpen));
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+
+    $$('.mobile-menu a').forEach(a => a.addEventListener('click', close));
+  }
+
+  /* ---------- Init ---------- */
+  renderCapacidades();
+  renderFilters();
+  renderWorks();
+  renderTicker();
+  setupCapPreview();
+  setupReveals();
+  setupCounters();
+  setupMobileMenu();
+})();
