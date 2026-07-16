@@ -249,7 +249,7 @@ const PROYECTOS = [
     img: 'content/proyectos/museo-universidad-de-navarra/conqueingredientes-unav1.jpg',
     title: 'Museo Universidad de Navarra',
     cliente: 'Universidad de Navarra',
-    caps: ['ux'],
+    caps: ['codigo', 'ux'],
     tags: ['HTML5', 'Bootstrap'],
     desc: 'Maquetación HTML5 con Bootstrap del site del Museo de la Universidad de Navarra.'
   },
@@ -258,7 +258,7 @@ const PROYECTOS = [
     img: 'content/proyectos/campus-iker-casillas/conqueingredientes-campusiker0.jpg',
     title: 'Campus Iker Casillas',
     cliente: 'Campus de Fútbol Iker Casillas',
-    caps: ['ux'],
+    caps: ['codigo', 'ux'],
     tags: ['HTML5', 'Maquetación'],
     desc: 'Maquetación HTML5 del site del campus de fútbol Iker Casillas.'
   },
@@ -267,7 +267,7 @@ const PROYECTOS = [
     img: 'content/proyectos/mt-de-la-plaza/conqueingredientes-mt1.jpg',
     title: 'MT de la Plaza',
     cliente: 'MT de la Plaza',
-    caps: ['ux'],
+    caps: ['codigo', 'ux'],
     tags: ['Diseño', 'HTML5', 'Responsive'],
     desc: 'Diseño y maquetación responsive en HTML5 para MT de la Plaza.'
   },
