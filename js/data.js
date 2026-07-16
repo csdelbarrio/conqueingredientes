@@ -70,6 +70,46 @@ const CAPACIDADES = [
 
 const PROYECTOS = [
   {
+    slug: 'legumbresalrescate',
+    img: 'assets/proyectos/legumbresalrescate.jpg',
+    title: 'Legumbres al Rescate',
+    cliente: 'CECU',
+    url: 'https://www.legumbresalrescate.es/',
+    caps: ['cms', 'datos'],
+    tags: ['WordPress', 'Diseño', 'Sistema de recetas'],
+    desc: 'Diseño y desarrollo web en WordPress, con montaje de un sistema de recetas.'
+  },
+  {
+    slug: 'fuhem',
+    img: 'assets/proyectos/fuhem.jpg',
+    title: 'Fuhem',
+    cliente: 'FUHEM',
+    url: 'https://www.fuhem.es/',
+    caps: ['cms', 'ux'],
+    tags: ['WordPress', 'Diseño'],
+    desc: 'Diseño y desarrollo web en WordPress para la fundación FUHEM.'
+  },
+  {
+    slug: 'architect-us',
+    img: 'assets/proyectos/architect-us.jpg',
+    title: 'Architect-US',
+    cliente: 'Architect-US',
+    url: 'https://www.architect-us.com/',
+    caps: ['infra', 'datos'],
+    tags: ['Infraestructura', 'Archivado web', 'Datos'],
+    desc: 'Remodelación de la infraestructura de archivado web y despliegue de tecnología interna con sistema de mantenimiento de datos.'
+  },
+  {
+    slug: 'rialo',
+    img: 'assets/proyectos/rialo.jpg',
+    title: 'Rialo Agrícola',
+    cliente: 'Rialo',
+    url: 'http://rialo.es/',
+    caps: ['gestion', 'ux'],
+    tags: ['Conceptualización', 'Diseño', 'Desarrollo'],
+    desc: 'Conceptualización, diseño y desarrollo completo del proyecto, de principio a fin.'
+  },
+  {
     slug: 'coam',
     img: 'content/proyectos/coam/conqueingredientes-coam1.jpg',
     title: 'Coam — Colegio de Arquitectos de Madrid',
@@ -86,42 +126,6 @@ const PROYECTOS = [
     caps: ['datos', 'codigo'],
     tags: ['HTML5', 'jQuery', 'JSON'],
     desc: 'Mapa interactivo desarrollado en HTML5 y jQuery, alimentado por multitud de datos en JSON.'
-  },
-  {
-    slug: 'bmw',
-    img: 'content/proyectos/bmw/th_bmw.jpg',
-    title: 'BMW Proactividad',
-    cliente: 'BMW',
-    caps: ['codigo', 'ux'],
-    tags: ['HTML5', 'jQuery', 'GreenSock', 'ScrollMagic'],
-    desc: 'Microsite de proactividad desarrollado en HTML5 con diversas librerías JavaScript de animación y scroll.'
-  },
-  {
-    slug: 'bmw-serie-3',
-    img: 'content/proyectos/bmw-serie-3/th_bmwbanner.jpg',
-    title: 'BMW Serie 3',
-    cliente: 'BMW',
-    caps: ['codigo'],
-    tags: ['HTML5', 'GSAP', 'Animación'],
-    desc: 'Desarrollo y animación de banner HTML5 con la librería de animación GSAP.'
-  },
-  {
-    slug: 'bmw-serie-3-tap-tap',
-    img: 'content/proyectos/bmw-serie-3/th_bmwbanner.jpg',
-    title: 'BMW Serie 3 Tap Tap',
-    cliente: 'BMW',
-    caps: ['codigo'],
-    tags: ['HTML5', 'GSAP', 'Animación'],
-    desc: 'Pieza interactiva animada en HTML5 con GSAP para la campaña del Serie 3.'
-  },
-  {
-    slug: 'smart',
-    img: 'assets/proyectos/smart.jpg',
-    title: 'Smart',
-    cliente: 'Smart',
-    caps: ['codigo'],
-    tags: ['HTML5', 'FlashTalking'],
-    desc: 'Desarrollo y animación de banner HTML5 sobre la plataforma FlashTalking.'
   },
   {
     slug: 'tu-algo-prestado',

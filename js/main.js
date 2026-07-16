@@ -98,10 +98,12 @@
 
     gridEl.innerHTML = items.map((p, i) => `
       <article class="work-card" style="animation-delay:${Math.min(i * 60, 360)}ms">
+        ${p.url ? `<a href="${p.url}" target="_blank" rel="noopener" class="work-link" aria-label="${p.title} (se abre en una pestaña nueva)">` : ''}
         <div class="work-media">
           <img src="${p.img}" alt="${p.title}" loading="lazy">
         </div>
-        <h3 class="work-title">${p.title}</h3>
+        <h3 class="work-title">${p.title}${p.url ? ' <span class="work-ext">↗</span>' : ''}</h3>
+        ${p.url ? '</a>' : ''}
         <p class="work-desc">${p.desc}</p>
         <div class="work-tags">
           ${p.tags.map(t => `<span>${t}</span>`).join('')}

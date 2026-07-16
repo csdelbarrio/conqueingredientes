@@ -5,13 +5,14 @@
    Tokens
    ============================================================ */
 :root {
-  --bg: #171a1e;            /* carbón, a juego con el logo */
-  --surface: #1f242a;
-  --surface-2: #262c33;
-  --text: #f4f5f3;
-  --muted: #9aa3ab;
-  --accent: #e8a33d;        /* azafrán — el "ingrediente" */
-  --line: rgba(255, 255, 255, .09);
+  --bg: #ffffff;            /* fondo blanco */
+  --surface: #f4f4f1;
+  --surface-2: #eceae5;
+  --text: #171a1e;          /* carbón, a juego con el logo */
+  --muted: #6e767e;
+  --accent: #c47c14;        /* azafrán — el "ingrediente" (texto) */
+  --accent-bg: #e8a33d;     /* azafrán vivo (fondos) */
+  --line: rgba(23, 26, 30, .13);
 
   --font-display: 'Archivo', sans-serif;
   --font-body: 'DM Sans', sans-serif;
@@ -40,7 +41,7 @@ ul { list-style: none; }
 img { display: block; max-width: 100%; }
 em { font-style: italic; color: var(--accent); }
 
-::selection { background: var(--accent); color: var(--bg); }
+::selection { background: var(--accent-bg); color: #171a1e; }
 
 /* ============ Reveal on scroll ============ */
 .reveal {
@@ -67,17 +68,17 @@ em { font-style: italic; color: var(--accent); }
   align-items: center;
   justify-content: space-between;
   padding: 18px var(--pad-x);
-  background: linear-gradient(rgba(23, 26, 30, .92), rgba(23, 26, 30, 0));
+  background: linear-gradient(rgba(255, 255, 255, .94), rgba(255, 255, 255, 0));
   backdrop-filter: blur(6px);
 }
 
 .brand { display: flex; align-items: center; gap: 12px; }
-.brand-logo { width: 38px; height: 38px; border-radius: 9px; }
+.brand-logo { width: 60px; height: 60px; border-radius: 14px; }
 .brand-name {
   font-family: var(--font-display);
   font-weight: 600;
   letter-spacing: -.02em;
-  font-size: 1.05rem;
+  font-size: 1.2rem;
 }
 
 .main-nav { display: flex; gap: 34px; }
@@ -104,9 +105,9 @@ em { font-style: italic; color: var(--accent); }
   transition: background .25s, color .25s, border-color .25s;
 }
 .btn-say-hello:hover, .btn-say-hello:focus-visible {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--bg);
+  background: var(--accent-bg);
+  border-color: var(--accent-bg);
+  color: #171a1e;
 }
 
 .menu-toggle {
@@ -381,14 +382,14 @@ em { font-style: italic; color: var(--accent); }
 }
 .filter-btn:hover { color: var(--text); border-color: var(--muted); }
 .filter-btn.active {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: var(--text);
+  border-color: var(--text);
   color: var(--bg);
 }
 
 .works-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: clamp(26px, 4vw, 50px);
 }
 
@@ -412,6 +413,14 @@ em { font-style: italic; color: var(--accent); }
   transition: transform .6s ease;
 }
 .work-card:hover .work-media img { transform: scale(1.045); }
+
+.work-link { display: block; }
+.work-link:hover .work-title { color: var(--accent); }
+.work-ext {
+  font-family: var(--font-mono);
+  font-size: .8em;
+  color: var(--accent);
+}
 
 .work-title {
   font-family: var(--font-display);
@@ -554,6 +563,10 @@ em { font-style: italic; color: var(--accent); }
 /* ============================================================
    Responsive
    ============================================================ */
+@media (max-width: 1200px) {
+  .works-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
 @media (max-width: 900px) {
   .main-nav { display: none; }
   .menu-toggle { display: flex; }
@@ -565,5 +578,6 @@ em { font-style: italic; color: var(--accent); }
 
   .stats { grid-template-columns: repeat(2, 1fr); }
   .works-grid { grid-template-columns: 1fr; }
+  .brand-logo { width: 46px; height: 46px; }
   .footer-cols { grid-template-columns: 1fr; }
 }
