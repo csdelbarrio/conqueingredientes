@@ -10,8 +10,8 @@
   --surface-2: #eceae5;
   --text: #171a1e;          /* carbón, a juego con el logo */
   --muted: #6e767e;
-  --accent: #c47c14;        /* azafrán — el "ingrediente" (texto) */
-  --accent-bg: #e8a33d;     /* azafrán vivo (fondos) */
+  --accent: #1ca75c;        /* verde marca (variante oscura para texto) */
+  --accent-bg: #44e07e;     /* verde marca */
   --line: rgba(23, 26, 30, .13);
 
   --font-display: 'Archivo', sans-serif;
@@ -73,7 +73,7 @@ em { font-style: italic; color: var(--accent); }
 }
 
 .brand { display: flex; align-items: center; gap: 12px; }
-.brand-logo { width: 60px; height: 60px; border-radius: 14px; }
+.brand-logo { width: 120px; height: 120px; border-radius: 0; }
 .brand-name {
   font-family: var(--font-display);
   font-weight: 600;
@@ -578,6 +578,6 @@ em { font-style: italic; color: var(--accent); }
 
   .stats { grid-template-columns: repeat(2, 1fr); }
   .works-grid { grid-template-columns: 1fr; }
-  .brand-logo { width: 46px; height: 46px; }
+  .brand-logo { width: 72px; height: 72px; }
   .footer-cols { grid-template-columns: 1fr; }
 }

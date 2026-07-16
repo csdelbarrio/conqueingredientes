@@ -53,7 +53,7 @@ const CAPACIDADES = [
     nombre: 'Arquitectura de datos',
     perfil: 'DBD — Diseño de bases de datos',
     desc: 'Modelar la información: catálogos, gestores de contenido y datos estructurados fáciles de mantener y consultar.',
-    chips: ['JSON', 'MySQL', 'Gestores de contenido', 'Modelado']
+    chips: ['JSON', 'MySQL', 'Bases de datos', 'Gestores de contenido', 'Modelado']
   },
   {
     id: 'gestion',
@@ -69,6 +69,16 @@ const CAPACIDADES = [
    `img` se resuelve como assets/proyectos/{slug}.jpg */
 
 const PROYECTOS = [
+  {
+    slug: 'consumo',
+    img: 'assets/proyectos/consumo.jpg',
+    title: 'Sistema de Atención al Consumidor',
+    cliente: 'Consumo',
+    url: 'https://csdelbarrio.github.io/consumo/',
+    caps: ['datos'],
+    tags: ['JSON', 'FAQ', 'Buscador'],
+    desc: 'Sistema de consulta FAQ bajo arquitectura JSON, con buscador y navegación por sectores.'
+  },
   {
     slug: 'legumbresalrescate',
     img: 'assets/proyectos/legumbresalrescate.jpg',
