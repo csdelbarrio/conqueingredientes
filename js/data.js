@@ -74,7 +74,7 @@ const PROYECTOS = [
     img: 'assets/proyectos/consumo.jpg',
     title: 'Sistema de Atención al Consumidor',
     cliente: 'Consumo',
-    url: 'https://csdelbarrio.github.io/consumo/',
+    url: 'https://dejemosloclaro.gob.es',
     caps: ['datos'],
     tags: ['JSON', 'FAQ', 'Buscador'],
     desc: 'Sistema de consulta FAQ bajo arquitectura JSON, con buscador y navegación por sectores.'
