@@ -100,6 +100,26 @@ const PROYECTOS = [
     desc: 'Diseño y desarrollo web en WordPress para la fundación FUHEM.'
   },
   {
+    slug: 'lafec',
+    img: 'assets/proyectos/lafec.jpg',
+    title: 'La FEC',
+    cliente: 'Fundación por la Europa de los Ciudadanos',
+    url: 'https://lafec.org/',
+    caps: ['cms', 'ux', 'infra'],
+    tags: ['WordPress', 'Diseño', 'Erasmus+'],
+    desc: 'Diseño, desarrollo y mantenimiento web en WordPress para la fundación (hoy Fundación de Estudios Críticos), con sección propia para sus proyectos Erasmus+.'
+  },
+  {
+    slug: 'lafec-adult-education',
+    img: 'assets/proyectos/lafec-adult-education.jpg',
+    title: 'Erasmus+ Adult Education',
+    cliente: 'Fundación por la Europa de los Ciudadanos',
+    url: 'https://web.archive.org/web/20191130084759/http://www.lafec.org/erasmus/adult-education/',
+    caps: ['cms', 'ux'],
+    tags: ['WordPress', 'Diseño', 'Erasmus+'],
+    desc: 'Web del proyecto europeo KA2 Adult Education (UP-WOMEN) sobre educación de adultos, inclusión y participación de mujeres migrantes, con seis socios de cinco países.'
+  },
+  {
     slug: 'architect-us',
     img: 'assets/proyectos/architect-us.jpg',
     title: 'Architect-US',
