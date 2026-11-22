@@ -80,6 +80,15 @@ const PROYECTOS = [
     desc: 'Sistema de consulta FAQ bajo arquitectura JSON, con buscador y navegación por sectores.'
   },
   {
+    slug: 'nudo',
+    img: 'assets/proyectos/nudo.jpg',
+    title: 'NUDO',
+    cliente: 'Proyecto propio',
+    caps: ['datos', 'codigo'],
+    tags: ['PHP', 'MySQL', 'E-commerce'],
+    desc: 'Tienda online de calzado en PHP 8 y MySQL sin frameworks: modelo relacional en 3FN, transacciones con control de stock, consultas preparadas y panel de administración.'
+  },
+  {
     slug: 'legumbresalrescate',
     img: 'assets/proyectos/legumbresalrescate.jpg',
     title: 'Legumbres al Rescate',
